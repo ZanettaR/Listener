@@ -17,8 +17,8 @@ def main():
         try:
             print('\nTranscript will be provided shortly:\n')
             transcript =  r.recognize_google(audio) #send the audio to google to be deciphered
-            print('Edward:' + transcript) #the program is done and is printing what you have
-            print("\nEdward: " + transcript, file=f) #adds what was said to the transcript function
+            print('User:' + transcript) #the program is done and is printing what you have
+            print("\nUser: " + transcript, file=f) #adds what was said to the transcript function
             f.close() #closes the file and saves
             #alive = input("Press 1 to end the transcription: ")
 
