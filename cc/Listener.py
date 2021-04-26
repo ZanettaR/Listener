@@ -12,22 +12,13 @@ class Listener:
         self.post_params = {'seq': str(self.seq), 'lang': 'en-US'}
         self.payload = ""
         self.mic_timeout = 60000
-        self.phrase_time_limit = 10
-
-        # this code needs to be changed
-        self.tk_window = Tk()
-        self.tk_window.geometry('300x720')
-        self.tk_window.title('Listener')
-        Button(self.tk_window, text="End Connection", command=self.tk_window.destroy).grid(row=2, column=1)
-
-        self.tk_window.mainloop()
-
+        self.phrase_time_limit = 5
         self.init_seq()
 
     def __enter__(self):
         pass
 
-    def __exit__(self):
+    def __exit__(self, exception_type, exception_value, traceback):
         print('Exit.')
 
     def init_seq(self):
@@ -41,7 +32,7 @@ class Listener:
         print(request.text)
         self.seq += 1
 
-    def run(self):
+    def run(self, screen_name):
         self.rec = sr.Recognizer()
         self.mic = sr.Microphone()
 
@@ -52,7 +43,7 @@ class Listener:
                     try:
                         audio = self.rec.listen(source, timeout=self.mic_timeout,
                                                 phrase_time_limit=self.phrase_time_limit)
-                        self.payload = self.rec.recognize_google(audio, language=self.post_params['lang'])
+                        self.payload = "{}: {}".format(screen_name, self.rec.recognize_google(audio, language=self.post_params['lang']))
                     except KeyboardInterrupt:
                         break
                     except sr.WaitTimeoutError:
