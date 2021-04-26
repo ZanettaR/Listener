@@ -13,21 +13,12 @@ class Listener:
         self.payload = ""
         self.mic_timeout = 60000
         self.phrase_time_limit = 10
-
-        # this code needs to be changed
-        self.tk_window = Tk()
-        self.tk_window.geometry('300x720')
-        self.tk_window.title('Listener')
-        Button(self.tk_window, text="End Connection", command=self.tk_window.destroy).grid(row=2, column=1)
-
-        self.tk_window.mainloop()
-
         self.init_seq()
 
     def __enter__(self):
         pass
 
-    def __exit__(self):
+    def __exit__(self, exception_type, exception_value, traceback):
         print('Exit.')
 
     def init_seq(self):
