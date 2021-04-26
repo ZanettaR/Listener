@@ -2,6 +2,7 @@ from data.helper import login, add_user, get_usernames
 from tkinter import *
 from functools import partial
 from user.User import User
+from cc.Listener import Listener
 
 
 def run():
@@ -40,7 +41,6 @@ def create_account_ui():
     username = StringVar()
     Entry(frame, textvariable=username).grid(row=1, column=1)
 
-    # password label and password entry box
     Label(frame, text="Password").grid(row=2, column=0)
     password = StringVar()
     Entry(frame, textvariable=password, show='*').grid(row=2, column=1)
@@ -64,7 +64,12 @@ def success(name, username, password):
     frame.pack(fill='both', expand=True, padx=0, pady=0, side=TOP)
     user_logout = partial(logout)
 
-    Button(frame, text="Logout", command=user_logout).grid(row=0, column=0)
+    Label(frame, text="Hello, {}".format(name)).grid(row=0, column=1)
+    Label(frame, text="Username: {}".format(username)).grid(row=1, column=1)
+    Label(frame, text="Password: {}".format(password)).grid(row=2, column=1)
+
+    Button(frame, text="Add Closed Captions", command=connect).grid(row=6, column=2)
+    Button(frame, text="Logout", command=user_logout).grid(row=7, column=3)
 
 
 def logout():
@@ -73,11 +78,32 @@ def logout():
     run()
 
 
+def connect():
+    f4.pack_forget()
+    f5.pack(fill='both', expand=True, padx=0, pady=0, side=TOP)
+    frame = f5
+
+    Label(frame, text="Enter Zoom API token").grid(row=1, column=1)
+    token = StringVar()
+    Entry(frame, textvariable=token).grid(row=2, column=1)
+
+    zoom_connect = partial(create_connection, token)
+    Button(frame, text="Connect", command=zoom_connect).grid(row=4, column=1)
+
+
+def create_connection(token):
+    listener = Listener(token.get())
+    with listener:
+        listener.run()
+
+
 if __name__ == "__main__":
     # globals
+    global tkWindow
     global f2
     global f3
     global f4
+    global f5
 
     # window
     tkWindow = Tk()
@@ -88,8 +114,8 @@ if __name__ == "__main__":
     f2 = Frame(tkWindow, width=400, height=200)
     f3 = Frame(tkWindow, width=400, height=200)
     f4 = Frame(tkWindow, width=400, height=200)
+    f5 = Frame(tkWindow, width=400, height=200)
     f2.pack(fill='both', expand=True, padx=0, pady=0, side=TOP)
-
 
     run()
 
