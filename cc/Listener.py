@@ -12,7 +12,9 @@ class Listener:
         self.post_params = {'seq': str(self.seq), 'lang': 'en-US'}
         self.payload = ""
         self.mic_timeout = 60000
+
         self.phrase_time_limit = 5
+
         self.init_seq()
 
     def __enter__(self):
